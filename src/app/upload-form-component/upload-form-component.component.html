@@ -1,1 +1,57 @@
-<p>upload-form-component works!</p>
+<div nz-row nzJustify="center">
+
+  <div nz-col nzSpan="8">
+
+    <form nz-form nzLayout="vertical" class="login-form" name="upload-form" (ngSubmit)="submitForm()">
+
+      <nz-form-item>
+        <nz-form-control>
+          <nz-upload nzType="drag" [nzMultiple]="false" [nzAction]="docUploadActionUrl" (nzChange)="handleChange($event)">
+            <p class="ant-upload-drag-icon">
+              <i nz-icon nzType="inbox" nzTheme="outline"></i>
+            </p>
+            <p class="ant-upload-text">Drag & drop your file here</p>
+            <p class="ant-upload-hint">(1 file & 10Mo maximum)</p>
+          </nz-upload>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label nzFor="student-email">Email étudiant</nz-form-label>
+        <nz-form-control>
+          <input nz-input name="student-email" id="student-email" type="email">
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label nzFor="external-email">Email intervenants</nz-form-label>
+        <nz-form-control>
+
+          <nz-tag *ngFor="let tag of tags; let i = index" nzMode="closeable" (nzOnClose)="handleClose(tag)">
+            {{ sliceTagName(tag) }}
+          </nz-tag>
+
+          <nz-tag *ngIf="!tagInputVisible" class="editable-tag" nzNoAnimation (click)="showInput()">
+            + Email
+          </nz-tag>
+
+          <input
+            #inputElement
+            nz-input
+            nzSize="small"
+            style="width: 80px;"
+            type="email"
+            name="external-email"
+            *ngIf="tagInputVisible"
+            [(ngModel)]="tagInputValue"
+            (blur)="handleInputConfirm()"
+            (keydown.enter)="handleInputConfirm()"
+          />
+
+        </nz-form-control>
+      </nz-form-item>
+
+      <button nz-button nzBlock class="login-form-button login-form-margin" [nzType]="'primary'">Envoyer</button>
+    </form>
+  </div>
+</div>
