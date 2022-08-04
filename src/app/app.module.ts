@@ -23,9 +23,9 @@ import {NzMessageService} from "ng-zorro-antd/message";
 
 import {IconDefinition} from '@ant-design/icons-angular';
 
-import {DeleteOutline, DownloadOutline, InboxOutline} from '@ant-design/icons-angular/icons';
+import {DeleteOutline, DownloadOutline, InboxOutline, PlusOutline} from '@ant-design/icons-angular/icons';
 
-const icons: IconDefinition[] = [DeleteOutline, DownloadOutline, InboxOutline];
+const icons: IconDefinition[] = [DeleteOutline, DownloadOutline, InboxOutline, PlusOutline];
 
 registerLocaleData(fr);
 
