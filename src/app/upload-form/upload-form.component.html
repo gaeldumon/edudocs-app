@@ -1,12 +1,15 @@
 <div nz-row nzJustify="center">
-
   <div nz-col nzSpan="8">
-
     <form nz-form nzLayout="vertical" class="login-form" name="upload-form" (ngSubmit)="submitForm()">
 
       <nz-form-item>
         <nz-form-control>
-          <nz-upload nzType="drag" [nzMultiple]="false" [nzAction]="docUploadActionUrl" (nzChange)="handleChange($event)">
+          <nz-upload
+            nzType="drag"
+            [nzMultiple]="false"
+            nzAction="http://localhost:3000/upload-document"
+            (nzChange)="handleUploadChange($event)"
+          >
             <p class="ant-upload-drag-icon">
               <i nz-icon nzType="inbox" nzTheme="outline"></i>
             </p>
@@ -19,19 +22,32 @@
       <nz-form-item>
         <nz-form-label nzFor="student-email">Email étudiant</nz-form-label>
         <nz-form-control>
-          <input nz-input name="student-email" id="student-email" type="email">
+          <input
+            nz-input
+            name="student-email"
+            id="student-email"
+            type="email"
+            [(ngModel)]="studentEmail"
+          >
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
         <nz-form-label nzFor="external-email">Email intervenants</nz-form-label>
         <nz-form-control>
-
-          <nz-tag *ngFor="let tag of tags; let i = index" nzMode="closeable" (nzOnClose)="handleClose(tag)">
+          <nz-tag
+            *ngFor="let tag of tags; let i = index"
+            nzMode="closeable"
+            (nzOnClose)="handleClose(tag)"
+          >
             {{ sliceTagName(tag) }}
           </nz-tag>
 
-          <nz-tag *ngIf="!tagInputVisible" class="editable-tag" nzNoAnimation (click)="showInput()">
+          <nz-tag
+            *ngIf="!tagInputVisible"
+            class="editable-tag"
+            nzNoAnimation (click)="showInput()"
+          >
             <i nz-icon nzType="plus" nzTheme="outline"></i>
             Email
           </nz-tag>
@@ -48,11 +64,17 @@
             (blur)="handleInputConfirm()"
             (keydown.enter)="handleInputConfirm()"
           />
-
         </nz-form-control>
       </nz-form-item>
 
-      <button nz-button nzBlock class="login-form-button login-form-margin" [nzType]="'primary'">Envoyer</button>
+      <button
+        nz-button
+        nzBlock
+        class="login-form-button login-form-margin"
+        [nzType]="'primary'"
+      >
+        Envoyer
+      </button>
     </form>
   </div>
 </div>

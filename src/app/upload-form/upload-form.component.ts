@@ -1,24 +1,29 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {NzUploadChangeParam} from "ng-zorro-antd/upload";
 import {NzMessageService} from "ng-zorro-antd/message";
+import {DocumentService} from "../services/document.service";
 
 @Component({
-  selector: 'app-upload-form-component',
-  templateUrl: './upload-form-component.component.html',
-  styleUrls: ['./upload-form-component.component.css']
+  selector: 'upload-form-component',
+  templateUrl: './upload-form.component.html',
+  styleUrls: ['./upload-form.component.css']
 })
-export class UploadFormComponentComponent implements OnInit {
+export class UploadFormComponent implements OnInit {
+
   public tagInputVisible: boolean;
   public tagInputValue: string;
   public tags: string[];
-  public docUploadActionUrl: string;
+  public filename: string;
+  public studentEmail: string;
+
   @ViewChild('inputElement', {static: false}) inputElement?: ElementRef;
 
-  constructor(private docUploadMessage: NzMessageService) {
+  constructor(private messageService: NzMessageService, private documentService: DocumentService) {
     this.tagInputVisible = false;
     this.tagInputValue = "";
     this.tags = [];
-    this.docUploadActionUrl = "https://www.mocky.io/v2/5cc8019d300000980a055e76"
+    this.filename = "";
+    this.studentEmail = "";
   }
 
   ngOnInit(): void {
@@ -28,7 +33,24 @@ export class UploadFormComponentComponent implements OnInit {
    *
    */
   submitForm(): void {
-    console.log("Form submitted");
+    this.documentService.sendDocument({
+      filename: this.filename,
+      studentEmail: this.studentEmail,
+      externalEmails: this.tags
+    }).subscribe(
+      data => {
+        console.log("ok", data)
+
+        if (data.status === "success") {
+          this.messageService.success(`${this.filename} a été envoyé à l'étudiant ${this.studentEmail} et aux intervenants ${this.tags.join("-")}`);
+        } else {
+          this.messageService.error(`${this.filename} n'a pas pu être envoyé pour la raison suivante : ${data.message}`);
+        }
+      },
+      err => {
+        this.messageService.error(`${this.filename} n'a pas pu être envoyé, veuillez réessayer`);
+      }
+    )
   }
 
   /**
@@ -36,15 +58,12 @@ export class UploadFormComponentComponent implements OnInit {
    * @param file
    * @param fileList
    */
-  handleChange({file, fileList}: NzUploadChangeParam): void {
-    const status = file.status;
-    if (status !== "uploading") {
-      console.log(file, fileList);
-    }
-    if (status === "done") {
-      this.docUploadMessage.success(`${file.name} file uploaded successfully.`);
+  handleUploadChange({file, fileList}: NzUploadChangeParam): void {
+    if (file.status === "done") {
+      this.filename = file.name;
+      this.messageService.success(`${file.name} file uploaded successfully.`);
     } else if (status === 'error') {
-      this.docUploadMessage.error(`${file.name} file upload failed.`);
+      this.messageService.error(`${file.name} file upload failed.`);
     }
   }
 

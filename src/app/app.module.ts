@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
-import {UploadFormComponentComponent} from './upload-form-component/upload-form-component.component';
+import {UploadFormComponent} from './upload-form/upload-form.component';
 import {NZ_I18N} from 'ng-zorro-antd/i18n';
 import {fr_FR} from 'ng-zorro-antd/i18n';
 import {registerLocaleData} from '@angular/common';
@@ -32,7 +32,7 @@ registerLocaleData(fr);
 @NgModule({
   declarations: [
     AppComponent,
-    UploadFormComponentComponent
+    UploadFormComponent
   ],
   imports: [
     BrowserModule,
