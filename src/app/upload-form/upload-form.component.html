@@ -9,14 +9,14 @@
             [nzMultiple]="false"
             nzLimit="1"
             nzFileType="application/pdf"
-            nzAction="http://localhost:3000/upload-document"
+            nzAction="http://localhost:3000/verify-document"
             (nzChange)="handleUploadChange($event)"
           >
             <p class="ant-upload-drag-icon">
               <i nz-icon nzType="inbox" nzTheme="outline"></i>
             </p>
-            <p class="ant-upload-text">Drag & drop your file here</p>
-            <p class="ant-upload-hint">(1 file & 10Mo maximum)</p>
+            <p class="ant-upload-text">Drag & drop votre fichier ici</p>
+            <p class="ant-upload-hint">(1 fichier pdf de 10Mo maximum)</p>
           </nz-upload>
         </nz-form-control>
       </nz-form-item>

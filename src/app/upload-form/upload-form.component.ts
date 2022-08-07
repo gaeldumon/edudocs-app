@@ -14,6 +14,7 @@ export class UploadFormComponent implements OnInit {
   public tagInputValue: string;
   public tags: string[];
   public filename: string;
+  public fileBase64: string | ArrayBuffer | null;
   public studentEmail: string;
 
   @ViewChild('inputElement', {static: false}) inputElement?: ElementRef;
@@ -23,6 +24,7 @@ export class UploadFormComponent implements OnInit {
     this.tagInputValue = "";
     this.tags = [];
     this.filename = "";
+    this.fileBase64 = "";
     this.studentEmail = "";
   }
 
@@ -36,13 +38,13 @@ export class UploadFormComponent implements OnInit {
    */
   submitForm(): void {
     this.documentService.sendDocument({
+      fileBase64: this.fileBase64,
       filename: this.filename,
       studentEmail: this.studentEmail,
       externalEmails: this.tags
     }).subscribe(
       data => {
         console.log("ok", data)
-
         if (data.status === "success") {
           this.messageService.success(`${this.filename} a été envoyé à l'étudiant ${this.studentEmail} et aux intervenants ${this.tags.join("-")}`);
         } else {
@@ -63,10 +65,31 @@ export class UploadFormComponent implements OnInit {
    */
   handleUploadChange({file, fileList}: NzUploadChangeParam): void {
     if (file.status === "done") {
+
+      // Setting the filename
       this.filename = file.name;
+
+      // Setting the Base64 value of the file
+      this.setFileBase64(<File>file.originFileObj);
+
+      // Display success toast message
       this.messageService.success(`${file.name} file uploaded successfully.`);
-    } else if (status === 'error') {
+
+    } else if (file.status === "error") {
       this.messageService.error(`${file.name} file upload failed.`);
+    }
+  }
+
+  /**
+   * Returns the Base64 value of a file.
+   * Mutate the fileBase64 property.
+   * @param file
+   */
+  private setFileBase64(file: File | Blob): void {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      this.fileBase64 = reader.result;
     }
   }
 
