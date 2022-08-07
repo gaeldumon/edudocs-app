@@ -30,7 +30,9 @@ export class UploadFormComponent implements OnInit {
   }
 
   /**
-   *
+   * Submit the document upload form. Call the sendDocument method of the documentService.
+   * Construct the necessary payload with the studentEmail, the filename and the externalEmails
+   * (compliance to ISendDocumentRequestBody). Print success or error toast message.
    */
   submitForm(): void {
     this.documentService.sendDocument({
@@ -54,7 +56,8 @@ export class UploadFormComponent implements OnInit {
   }
 
   /**
-   *
+   * Handle the change event on the drag&drop upload input. Set the new filename on each change.
+   * Print toast message on success or error.
    * @param file
    * @param fileList
    */
@@ -86,7 +89,7 @@ export class UploadFormComponent implements OnInit {
   }
 
   /**
-   *
+   * Show the external email input being filled.
    */
   showInput(): void {
     this.tagInputVisible = true;
@@ -96,7 +99,7 @@ export class UploadFormComponent implements OnInit {
   }
 
   /**
-   *
+   * Add the external email tag that has just been filled, to the tags. Triggered on keyboard ENTER.
    */
   handleInputConfirm(): void {
     if (this.tagInputValue && this.tags.indexOf(this.tagInputValue) === -1) {
